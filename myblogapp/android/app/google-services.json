@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "531726422683",
+    "project_id": "mdblogapp",
+    "storage_bucket": "mdblogapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531726422683:android:19c2bced7710899a122c3e",
+        "android_client_info": {
+          "package_name": "com.example.myblogapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531726422683-m44hd9jlgcdjaum0tpt9viutn2ccbmqb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myblogapp",
+            "certificate_hash": "313a4c2416fea36d413deeb1448f318ff786ead8"
+          }
+        },
+        {
+          "client_id": "531726422683-5euvugju41mnqs30mrgd0d270i14g6ir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl17drrTy9GR4ikKAH1TGB-eSMWy_j91A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531726422683-5euvugju41mnqs30mrgd0d270i14g6ir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
