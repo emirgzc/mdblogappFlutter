@@ -24,10 +24,10 @@ class MyBlogPage extends StatelessWidget {
               ),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
+                  Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(
-                      builder: (builder) => Detailpage(
+                      fullscreenDialog: true,
+                      builder: (context) => Detailpage(
                         blog: allBlogs[index],
                         likeCount: allBlogs[index].blogLikes,
                       ),

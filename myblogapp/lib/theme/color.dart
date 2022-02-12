@@ -9,6 +9,7 @@ const Color grey = Color(0xff888888);
 const Color lightGrey = Color(0xfff5f5f5);
 const Color green = Color(0xFFC8E6C9);
 const Color grey2 = Color(0xFFe9ecef);
+const Color bgColor = Color(0xFFF8F9FA);
 
 final kDefualtShadow = BoxShadow(
   offset: Offset(5, 5),

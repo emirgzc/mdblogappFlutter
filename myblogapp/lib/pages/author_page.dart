@@ -29,6 +29,7 @@ class AuthorPage extends StatelessWidget {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
+            SizedBox(height: 15),
             Container(
               height: 150,
               width: 150,
@@ -143,6 +144,7 @@ class AuthorPage extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 15),
           ],
         ),
       ),

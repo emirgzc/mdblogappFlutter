@@ -72,10 +72,10 @@ class _OneCikanlarState extends State<OneCikanlar> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
+                            Navigator.of(context, rootNavigator: true).push(
                               MaterialPageRoute(
-                                builder: (builder) => Detailpage(
+                                fullscreenDialog: true,
+                                builder: (context) => Detailpage(
                                   blog: popularBlogs[index],
                                   likeCount: popularBlogs[index].blogLikes,
                                 ),
@@ -157,9 +157,9 @@ class _OneCikanlarState extends State<OneCikanlar> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
+                            Navigator.of(context, rootNavigator: true).push(
                               MaterialPageRoute(
+                                fullscreenDialog: true,
                                 builder: (context) => AuthorPage(
                                   writers: allWriters[index],
                                 ),
@@ -234,10 +234,10 @@ class _OneCikanlarState extends State<OneCikanlar> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
+                              Navigator.of(context, rootNavigator: true).push(
                                 MaterialPageRoute(
-                                  builder: (builder) => Detailpage(
+                                  fullscreenDialog: true,
+                                  builder: (context) => Detailpage(
                                     blog: lastBlogs[index],
                                     likeCount: lastBlogs[index].blogLikes,
                                   ),
@@ -308,6 +308,7 @@ class _OneCikanlarState extends State<OneCikanlar> {
               ),
             ),
           ),
+          SizedBox(height: 20),
         ],
       ),
     );

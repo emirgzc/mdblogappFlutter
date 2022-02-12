@@ -35,9 +35,9 @@ class BuildBlog extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
+                        Navigator.of(context, rootNavigator: true).push(
                           MaterialPageRoute(
+                            fullscreenDialog: true,
                             builder: (context) => AuthorPage(
                               writers: blog.blogWriter,
                             ),
@@ -101,10 +101,10 @@ class BuildBlog extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
+            Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
-                builder: (builder) => Detailpage(
+                fullscreenDialog: true,
+                builder: (context) => Detailpage(
                   blog: blog,
                   likeCount: blog.blogLikes,
                 ),
