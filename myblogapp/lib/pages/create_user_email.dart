@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myblogapp/app/hata_exception.dart';
 import 'package:myblogapp/model/user.dart';
-import 'package:myblogapp/pages/login_page.dart';
 import 'package:myblogapp/theme/color.dart';
 import 'package:myblogapp/viewmodel/view_model.dart';
 import 'package:myblogapp/widget/pd_alert_dialog.dart';
@@ -39,7 +38,7 @@ class _CreateUserEmailPasswordState extends State<CreateUserEmailPassword> {
           baslik: "Kullanıcı Oluşturma Hata",
           anaButonYazisi: "Tamam",
           color: Colors.redAccent,
-          icon: Icons.error,
+          icon: "assets/icons/complete.svg",
         ).goster(context);
       }
     } catch (e) {
@@ -199,6 +198,33 @@ class _CreateUserEmailPasswordState extends State<CreateUserEmailPassword> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 50),
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // ignore: prefer_const_literals_to_create_immutables
+                            children: [
+                              Text(
+                                "Created by",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                " Emir Gözcü ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              Icon(
+                                Icons.copyright,
+                                size: 17,
+                              )
+                            ],
+                          ),
+                        ),
                         SizedBox(height: size.height / 6),
                       ],
                     ),
@@ -208,7 +234,41 @@ class _CreateUserEmailPasswordState extends State<CreateUserEmailPassword> {
             )
           : Scaffold(
               body: Center(
-                child: CircularProgressIndicator(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 5),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Container(
+                        height: 200,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/logo.png"),
+                            fit: BoxFit.cover,
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    CircularProgressIndicator(
+                      backgroundColor: grey,
+                    ),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        "Loading",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
     );

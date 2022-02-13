@@ -12,7 +12,7 @@ class TabItemData {
     TabItem.AnaSayfa:
         TabItemData("Ana Sayfa", "assets/icons/home_inactive.svg"),
     TabItem.OneCikanlar:
-        TabItemData("Öne Çıkanlar", "assets/icons/search_inactive.svg"),
+        TabItemData("Öne Çıkanlar", "assets/icons/search_active.svg"),
     TabItem.MyBlogPage:
         TabItemData("Bloglarım", "assets/icons/heart_inactive.svg"),
     TabItem.Profil: TabItemData("Profil", "assets/icons/cart_inactive.svg"),

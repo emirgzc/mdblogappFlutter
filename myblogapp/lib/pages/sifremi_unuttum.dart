@@ -137,6 +137,33 @@ class _SifremiUnuttumState extends State<SifremiUnuttum> {
                     ),
                   ),
                 ),
+                SizedBox(height: 50),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      Text(
+                        "Created by",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        " Emir Gözcü ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Icon(
+                        Icons.copyright,
+                        size: 17,
+                      )
+                    ],
+                  ),
+                ),
                 SizedBox(height: size.height / 5),
               ],
             ),
@@ -158,7 +185,7 @@ class _SifremiUnuttumState extends State<SifremiUnuttum> {
         baslik: "Başarılı",
         icerik: "Şifre Resetleme Maili Gönderme Başarılı.",
         anaButonYazisi: "Tamam",
-        icon: Icons.how_to_reg,
+        icon: "assets/icons/complete.svg",
         color: Colors.greenAccent,
       ).goster(context);
     } else {
@@ -167,7 +194,7 @@ class _SifremiUnuttumState extends State<SifremiUnuttum> {
         icerik: "Bir Hata Oluştu",
         anaButonYazisi: "Tamam",
         color: Colors.redAccent,
-        icon: Icons.error,
+        icon: "assets/icons/errors.svg",
       ).goster(context);
     }
   }

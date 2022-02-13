@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:myblogapp/widget/platform_duyarli_widget.dart';
 
 class PDAlertDialog extends PlatformDuyarliWidget {
@@ -11,7 +12,7 @@ class PDAlertDialog extends PlatformDuyarliWidget {
   final String icerik;
   final String anaButonYazisi;
   final String? iptalButonText;
-  final IconData icon;
+  final String icon;
   final Color color;
 
   PDAlertDialog({
@@ -39,8 +40,31 @@ class PDAlertDialog extends PlatformDuyarliWidget {
   @override
   Widget buildAndroidWidget(BuildContext context) {
     return AlertDialog(
-      title: Text(baslik),
-      content: Text(icerik),
+      title: Row(
+        children: [
+          SvgPicture.asset(
+            icon,
+          ),
+          SizedBox(width: 30),
+          Text(baslik)
+        ],
+      ),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          SizedBox(width: 1),
+          Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+            ),
+          ),
+          SizedBox(width: 1),
+          Expanded(child: Text(icerik)),
+          SizedBox(width: 1),
+        ],
+      ),
       actions: _dialogButonAyarla(context),
     );
   }

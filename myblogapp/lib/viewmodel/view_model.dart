@@ -91,17 +91,18 @@ class UserModel with ChangeNotifier implements AuthBase {
   @override
   Future<MyUser?> signInWithEmailandPassword(
       String email, String password) async {
-    try {
-      if (_emailSifreKontrol(email, password)) {
+    if (_emailSifreKontrol(email, password)) {
+      try {
         state = ViewState.Busy;
         _user =
             await _userRepository.signInWithEmailandPassword(email, password);
+        state = ViewState.Idle;
         return _user;
-      } else {
-        return null;
+      } finally {
+        state = ViewState.Idle;
       }
-    } finally {
-      state = ViewState.Idle;
+    } else {
+      return null;
     }
   }
 

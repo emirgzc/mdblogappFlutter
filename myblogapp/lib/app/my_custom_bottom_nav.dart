@@ -20,31 +20,34 @@ class MyCustomBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        backgroundColor: grey2,
-        activeColor: Colors.black,
-        items: [
-          _navItemOlustur(TabItem.AnaSayfa),
-          _navItemOlustur(TabItem.OneCikanlar),
-          _navItemOlustur(TabItem.MyBlogPage),
-          _navItemOlustur(TabItem.Profil),
-        ],
-        onTap: (index) => onSelectedTab(
-          TabItem.values[index],
+    return SafeArea(
+      child: CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
+          backgroundColor: grey2,
+          activeColor: black,
+          inactiveColor: Colors.black87,
+          items: [
+            _navItemOlustur(TabItem.AnaSayfa),
+            _navItemOlustur(TabItem.OneCikanlar),
+            _navItemOlustur(TabItem.MyBlogPage),
+            _navItemOlustur(TabItem.Profil),
+          ],
+          onTap: (index) => onSelectedTab(
+            TabItem.values[index],
+          ),
         ),
+        tabBuilder: (context, index) {
+          final gosterilecekItem = TabItem.values[index];
+          return CupertinoTabView(
+            navigatorKey: navigatorKeys[gosterilecekItem],
+            builder: (context) {
+              return Center(
+                child: sayfaOlusturucu[gosterilecekItem],
+              );
+            },
+          );
+        },
       ),
-      tabBuilder: (context, index) {
-        final gosterilecekItem = TabItem.values[index];
-        return CupertinoTabView(
-          navigatorKey: navigatorKeys[gosterilecekItem],
-          builder: (context) {
-            return Center(
-              child: sayfaOlusturucu[gosterilecekItem],
-            );
-          },
-        );
-      },
     );
   }
 
@@ -53,7 +56,8 @@ class MyCustomBottomNavigation extends StatelessWidget {
     return BottomNavigationBarItem(
       icon: SvgPicture.asset(
         olusturulacakTab!.icon,
-        height: 25,
+        height: 23,
+        color: Colors.black,
       ),
       label: olusturulacakTab.title.toString(),
     );

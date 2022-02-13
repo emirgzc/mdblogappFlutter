@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           //backgroundColor: Colors.white,
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: bgColor,
           bottomAppBarColor: grey2.withOpacity(0.5),
           appBarTheme: AppBarTheme(
             color: Colors.white,

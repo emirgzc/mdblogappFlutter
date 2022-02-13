@@ -56,6 +56,7 @@ class _ProfilUpdateState extends State<ProfilUpdate> {
         child: Center(
           child: Column(
             children: [
+              SizedBox(height: 20),
               CircleAvatar(
                 radius: 80,
                 backgroundImage: NetworkImage(
@@ -102,6 +103,7 @@ class _ProfilUpdateState extends State<ProfilUpdate> {
                 child: ElevatedButton(
                   onPressed: () {
                     _userGuncelle(context);
+                    debugPrint(DateTime.now().toString());
                   },
                   child: Text("Güncelle"),
                   style: ButtonStyle(
@@ -137,7 +139,7 @@ class _ProfilUpdateState extends State<ProfilUpdate> {
           baslik: "Başarılı",
           icerik: "Username Güncellendi.",
           anaButonYazisi: "Tamam",
-          icon: Icons.how_to_reg,
+          icon: "assets/icons/complete.svg",
           color: Colors.greenAccent,
         ).goster(context);
       } else {
@@ -147,7 +149,7 @@ class _ProfilUpdateState extends State<ProfilUpdate> {
           icerik: "Username zaten kullanımda. Farklı değer giriniz",
           anaButonYazisi: "Tamam",
           color: Colors.redAccent,
-          icon: Icons.error,
+          icon: "assets/icons/errors.svg",
         ).goster(context);
       }
     }
@@ -170,7 +172,7 @@ class _ProfilUpdateState extends State<ProfilUpdate> {
           baslik: "Başarılı",
           icerik: "Güncelleme Başarılı.",
           anaButonYazisi: "Tamam",
-          icon: Icons.how_to_reg,
+          icon: "assets/icons/complete.svg",
           color: Colors.greenAccent,
         ).goster(context);
       } else {
@@ -180,7 +182,7 @@ class _ProfilUpdateState extends State<ProfilUpdate> {
           icerik: "Bir Hata Oluştu",
           anaButonYazisi: "Tamam",
           color: Colors.redAccent,
-          icon: Icons.error,
+          icon: "assets/icons/errors.svg",
         ).goster(context);
       }
     }
@@ -197,7 +199,7 @@ class _ProfilUpdateState extends State<ProfilUpdate> {
           baslik: "Başarılı",
           icerik: "Name Surname Güncellendi.",
           anaButonYazisi: "Tamam",
-          icon: Icons.how_to_reg,
+          icon: "assets/icons/complete.svg",
           color: Colors.greenAccent,
         ).goster(context);
       } else {
@@ -207,7 +209,7 @@ class _ProfilUpdateState extends State<ProfilUpdate> {
           icerik: "Name Surname zaten kullanımda. Farklı değer giriniz",
           anaButonYazisi: "Tamam",
           color: Colors.redAccent,
-          icon: Icons.error,
+          icon: "assets/icons/errors.svg",
         ).goster(context);
       }
     }

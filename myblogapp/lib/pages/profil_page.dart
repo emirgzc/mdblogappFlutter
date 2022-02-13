@@ -38,100 +38,103 @@ class _ProfilPageState extends State<ProfilPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 5,
-              ),
-              Flexible(
-                flex: 3,
-                child: Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return SizedBox(
-                              height: 170,
-                              child: Column(
-                                // ignore: prefer_const_literals_to_create_immutables
-                                children: [
-                                  ListTile(
-                                    leading: Icon(Icons.camera),
-                                    title: Text("Kameradan Çek"),
-                                    onTap: () {
-                                      _yeniFotoEkle(ImageSource.camera);
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.image),
-                                    title: Text("Galeriden Seç"),
-                                    onTap: () {
-                                      _yeniFotoEkle(ImageSource.gallery);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: CircleAvatar(
-                        radius: 80,
-                        backgroundColor: Colors.white,
-                        backgroundImage: _yeniImage == null
-                            ? NetworkImage(
-                                _userModel.user!.profilUrl.toString())
-                            : FileImage(_yeniImage!) as ImageProvider,
-                      ),
-                    ),
-                    Positioned(
-                      left: 110,
-                      top: 110,
-                      child: GestureDetector(
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 5,
+                ),
+                Flexible(
+                  flex: 3,
+                  child: Stack(
+                    children: [
+                      GestureDetector(
                         onTap: () {
-                          _profilFotoGuncelle(context);
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return SizedBox(
+                                height: 170,
+                                child: Column(
+                                  // ignore: prefer_const_literals_to_create_immutables
+                                  children: [
+                                    ListTile(
+                                      leading: Icon(Icons.camera),
+                                      title: Text("Kameradan Çek"),
+                                      onTap: () {
+                                        _yeniFotoEkle(ImageSource.camera);
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: Icon(Icons.image),
+                                      title: Text("Galeriden Seç"),
+                                      onTap: () {
+                                        _yeniFotoEkle(ImageSource.gallery);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         },
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: grey2,
-                          ),
-                          child: Icon(Icons.save),
+                        child: CircleAvatar(
+                          radius: 80,
+                          backgroundColor: Colors.white,
+                          backgroundImage: _yeniImage == null
+                              ? NetworkImage(
+                                  _userModel.user!.profilUrl.toString())
+                              : FileImage(_yeniImage!) as ImageProvider,
                         ),
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        left: 110,
+                        top: 110,
+                        child: GestureDetector(
+                          onTap: () {
+                            _profilFotoGuncelle(context);
+                          },
+                          child: Container(
+                            height: 45,
+                            width: 45,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: grey2,
+                            ),
+                            child: Icon(Icons.save),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(width: 10),
-              Flexible(
-                flex: 3,
-                child: Column(
-                  children: [
-                    buildUsersText(
-                      label: "İsim : ",
-                      text: "${_userModel.user!.nameSurname}",
-                    ),
-                    buildUsersText(
-                      label: "Kullanıcı Adı : ",
-                      text: "${_userModel.user!.userName}",
-                    ),
-                    buildUsersText(
-                      label: "Email : ",
-                      text: "${_userModel.user!.email}",
-                    ),
-                  ],
+                SizedBox(width: 10),
+                Flexible(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      buildUsersText(
+                        label: "İsim : ",
+                        text: "${_userModel.user!.nameSurname}",
+                      ),
+                      buildUsersText(
+                        label: "Kullanıcı Adı : ",
+                        text: "${_userModel.user!.userName}",
+                      ),
+                      buildUsersText(
+                        label: "Email : ",
+                        text: "${_userModel.user!.email}",
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-            ],
+                SizedBox(
+                  width: 10,
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 20),
           Column(
@@ -260,7 +263,7 @@ class _ProfilPageState extends State<ProfilPage> {
       anaButonYazisi: "Evet",
       iptalButonText: "Vazgeç",
       color: Colors.redAccent,
-      icon: Icons.arrow_back_ios,
+      icon: "assets/icons/errors.svg",
     ).goster(context);
     if (sonuc == true) {
       _cikisYap(context);
@@ -280,7 +283,7 @@ class _ProfilPageState extends State<ProfilPage> {
           baslik: "Başarılı",
           icerik: "Profil fotoğrafınız güncellendi",
           anaButonYazisi: 'Tamam',
-          icon: Icons.how_to_reg,
+          icon: "assets/icons/complete.svg",
           color: Colors.greenAccent,
         ).goster(context);
         _userModel.user!.profilUrl = url;

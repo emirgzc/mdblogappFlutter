@@ -11,18 +11,10 @@ class LandingPageUser extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserModel _userModel = Provider.of<UserModel>(context);
 
-    if (_userModel.state == ViewState.Idle) {
-      if (_userModel.user == null) {
-        return LoginPage();
-      } else {
-        return RootPage(user: _userModel.user);
-      }
+    if (_userModel.user == null) {
+      return LoginPage();
     } else {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return RootPage(user: _userModel.user);
     }
   }
 }

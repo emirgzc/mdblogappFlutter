@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, unused_local_variable, must_be_immutable, avoid_print, unused_element, unnecessary_null_comparison, unused_field, curly_braces_in_flow_control_structures, prefer_if_null_operators, unnecessary_brace_in_string_interps
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, unused_local_variable, must_be_immutable, avoid_print, unused_element, unnecessary_null_comparison, unused_field, curly_braces_in_flow_control_structures, prefer_if_null_operators, unnecessary_brace_in_string_interps, prefer_const_literals_to_create_immutables
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String? _email, _sifre;
   final _formKey = GlobalKey<FormState>();
-  bool isChecked = false;
 
   void _formLogin() async {
     try {
@@ -33,14 +32,15 @@ class _LoginPageState extends State<LoginPage> {
             await _userModel.signInWithEmailandPassword(_email!, _sifre!);
         if (_girisYapanUser! != null)
           debugPrint(
-              "giriş yapan user id : " + _girisYapanUser.userID.toString());
+            "giriş yapan user id : " + _girisYapanUser.userID.toString(),
+          );
       } on FirebaseAuthException catch (e) {
         PDAlertDialog(
           icerik: Hatalar.goster(e.code),
-          baslik: "Oturuç Açma Sırasında Hata",
+          baslik: "Kullanıcı Giriş Hata",
           anaButonYazisi: "Tamam",
           color: Colors.redAccent,
-          icon: Icons.error,
+          icon: "assets/icons/errors.svg",
         ).goster(context);
       }
     } catch (e) {
@@ -84,208 +84,275 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: bgColor,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Center(
-            child: Column(
-              children: [
-                SizedBox(height: 15),
-                Container(
-                  height: 165,
-                  width: 165,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/logo.png"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 60),
-                Form(
-                  key: _formKey,
+      body: _userModel.state == ViewState.Idle
+          ? SafeArea(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Center(
                   child: Column(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 25,
-                          vertical: 5,
-                        ),
-                        child: Container(
-                          height: 55,
-                          width: double.infinity,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: white,
-                            border: Border.all(
-                              color: grey,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: grey.withOpacity(0.5),
-                                blurRadius: 10,
-                                offset: Offset(5, 5),
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              errorText: _userModel.emailHataMesaji != null
-                                  ? _userModel.emailHataMesaji
-                                  : null,
-                              prefixIcon: Icon(Icons.mail),
-                              hintText: "Mail Adresi",
-                            ),
-                            onSaved: (String? girilenEmail) {
-                              _email = girilenEmail;
-                            },
+                      SizedBox(height: 15),
+                      Container(
+                        height: 165,
+                        width: 165,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/logo.png"),
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                        child: Container(
-                          height: 55,
-                          width: double.infinity,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: white,
-                            border: Border.all(
-                              color: grey,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: grey.withOpacity(0.5),
-                                blurRadius: 10,
-                                offset: Offset(5, 5),
+                      SizedBox(height: 60),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 25,
+                                vertical: 5,
                               ),
-                            ],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: TextFormField(
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              errorText: _userModel.sifreHataMesaji != null
-                                  ? _userModel.sifreHataMesaji
-                                  : null,
-                              prefixIcon: Icon(Icons.vpn_key),
-                              hintText: "Şifre",
-                            ),
-                            onSaved: (String? girilenSifre) {
-                              _sifre = girilenSifre;
-                            },
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                        child: GestureDetector(
-                          onTap: () => _formLogin(),
-                          child: Container(
-                            height: 55,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF6c757d),
-                              borderRadius: BorderRadius.circular(8),
-                              // ignore: prefer_const_literals_to_create_immutables
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 10,
-                                  color: grey.withOpacity(0.3),
-                                  offset: Offset(10, 5),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Giriş",
-                                style: TextStyle(
-                                  fontSize: 17,
+                              child: Container(
+                                height: 55,
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
                                   color: white,
+                                  border: Border.all(
+                                    color: grey,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: grey.withOpacity(0.5),
+                                      blurRadius: 10,
+                                      offset: Offset(5, 5),
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    errorText:
+                                        _userModel.emailHataMesaji != null
+                                            ? _userModel.emailHataMesaji
+                                            : null,
+                                    prefixIcon: Icon(Icons.mail),
+                                    hintText: "Mail Adresi",
+                                  ),
+                                  onSaved: (String? girilenEmail) {
+                                    _email = girilenEmail;
+                                  },
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 5),
+                              child: Container(
+                                height: 55,
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: white,
+                                  border: Border.all(
+                                    color: grey,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: grey.withOpacity(0.5),
+                                      blurRadius: 10,
+                                      offset: Offset(5, 5),
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: TextFormField(
+                                  obscureText: true,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    errorText:
+                                        _userModel.sifreHataMesaji != null
+                                            ? _userModel.sifreHataMesaji
+                                            : null,
+                                    prefixIcon: Icon(Icons.vpn_key),
+                                    hintText: "Şifre",
+                                  ),
+                                  onSaved: (String? girilenSifre) {
+                                    _sifre = girilenSifre;
+                                  },
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 10),
+                              child: GestureDetector(
+                                onTap: () => _formLogin(),
+                                child: Container(
+                                  height: 55,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF6c757d),
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 10,
+                                        color: grey.withOpacity(0.3),
+                                        offset: Offset(10, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Giriş",
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        color: white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 27),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true).push(
+                                  MaterialPageRoute(
+                                    fullscreenDialog: true,
+                                    builder: (context) => SifremiUnuttum(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "Şifremi Unuttum?",
+                                style: TextStyle(
+                                  color: grey,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                          ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true).push(
+                                  MaterialPageRoute(
+                                    fullscreenDialog: true,
+                                    builder: (context) =>
+                                        CreateUserEmailPassword(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "Kayıt Ol",
+                                style: TextStyle(
+                                  color: grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          buildSocialLoginButoon(
+                              image: "assets/images/google-logo.png",
+                              onPressed: () => _googleIleGiris(context),
+                              text: "Google"),
+                          buildSocialLoginButoon(
+                            icon: Icons.facebook,
+                            isFull: false,
+                            isColor: Colors.blueAccent,
+                            text: "Facebook",
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 50),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Created by",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              " Emir Gözcü ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Icon(
+                              Icons.copyright,
+                              size: 17,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 50),
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 27),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context, rootNavigator: true).push(
-                            MaterialPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) => SifremiUnuttum(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          "Şifremi Unuttum?",
-                          style: TextStyle(
-                            color: grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context, rootNavigator: true).push(
-                            MaterialPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) => CreateUserEmailPassword(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          "Kayıt Ol",
-                          style: TextStyle(
-                            color: grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
-                Row(
+              ),
+            )
+          : Scaffold(
+              body: Center(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    buildSocialLoginButoon(
-                        image: "assets/images/google-logo.png",
-                        onPressed: () => _googleIleGiris(context),
-                        text: "Google"),
-                    buildSocialLoginButoon(
-                      icon: Icons.facebook,
-                      isFull: false,
-                      isColor: Colors.blueAccent,
-                      text: "Facebook",
+                    SizedBox(height: 5),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Container(
+                        height: 200,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/logo.png"),
+                            fit: BoxFit.cover,
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    CircularProgressIndicator(
+                      backgroundColor: grey,
+                    ),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        "Loading",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: 50),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
