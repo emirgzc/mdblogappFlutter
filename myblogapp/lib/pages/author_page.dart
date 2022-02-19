@@ -1,19 +1,22 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myblogapp/model/blog.dart';
-import 'package:myblogapp/model/writers.dart';
+import 'package:myblogapp/model/user.dart';
 import 'package:myblogapp/pages/detail_page.dart';
 import 'package:myblogapp/theme/color.dart';
+import 'package:myblogapp/viewmodel/view_model.dart';
+import 'package:provider/provider.dart';
 
 class AuthorPage extends StatelessWidget {
   const AuthorPage({Key? key, required this.writers}) : super(key: key);
 
-  final Writers writers;
+  final MyUser? writers;
 
   @override
   Widget build(BuildContext context) {
+    UserModel _userModel = Provider.of<UserModel>(context);
     return Scaffold(
       backgroundColor: grey2,
       appBar: AppBar(
@@ -38,19 +41,23 @@ class AuthorPage extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: grey.withOpacity(0.5), width: 1),
                 image: DecorationImage(
-                  image: AssetImage(
-                    writers.image,
+                  image: NetworkImage(
+                    writers!.profilUrl.toString(),
                   ),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             SizedBox(height: 10),
-            buildUsersText(label: "İsim : ", text: writers.name),
+            buildUsersText(
+              label: "İsim : ",
+              text: writers!.nameSurname.toString(),
+            ),
             SizedBox(height: 3),
-            buildUsersText(label: "Soyisim : ", text: writers.surname),
-            SizedBox(height: 3),
-            buildUsersText(label: "Email : ", text: writers.email),
+            buildUsersText(
+              label: "Email : ",
+              text: writers!.email.toString(),
+            ),
             SizedBox(height: 20),
             Row(
               // ignore: prefer_const_literals_to_create_immutables
@@ -67,82 +74,132 @@ class AuthorPage extends StatelessWidget {
                 ),
               ],
             ),
-            Wrap(
-              alignment: WrapAlignment.spaceAround,
-              children: [
-                ...List.generate(
-                  popularBlogs.length,
-                  (index) => Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 10,
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (builder) => Detailpage(
-                              blog: popularBlogs[index],
-                              likeCount: popularBlogs[index].blogLikes,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 150,
-                            width: 170,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    popularBlogs[index].blogImageUrl),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 50,
-                            width: 170,
-                            decoration: BoxDecoration(
-                              color: grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              // ignore: prefer_const_literals_to_create_immutables
-                              children: [
-                                Text(
-                                  popularBlogs[index].blogTitle,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+            SizedBox(
+              width: double.infinity,
+              child: FutureBuilder<List<Blog>?>(
+                future: _userModel.getAllBlog(),
+                builder: (context, sonuc) {
+                  if (sonuc.hasData) {
+                    var tumBloglar = sonuc.data;
+                    return Wrap(
+                      children: [
+                        ...List.generate(
+                          tumBloglar!.length,
+                          (index) {
+                            var oankiBlogId = sonuc.data![index];
+                            if (oankiBlogId.writerID == writers!.userID) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 10,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (builder) => Detailpage(
+                                          blog: tumBloglar[index],
+                                          likeCount:
+                                              tumBloglar[index].blogLikes,
+                                          writers: writers,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 150,
+                                        width: 175,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                          ),
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                              tumBloglar[index]
+                                                  .blogImageUrl
+                                                  .toString(),
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: grey.withOpacity(0.5),
+                                              blurRadius: 10,
+                                              offset: Offset(5, 5),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 175,
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 8),
+                                        decoration: BoxDecoration(
+                                          color: white.withOpacity(0.8),
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: grey.withOpacity(0.5),
+                                              blurRadius: 10,
+                                              offset: Offset(5, 5),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          // ignore: prefer_const_literals_to_create_immutables
+                                          children: [
+                                            Text(
+                                              tumBloglar[index]
+                                                  .blogTitle
+                                                  .toString(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            Text(
+                                              tumBloglar[index]
+                                                  .blogDate!
+                                                  .toDate()
+                                                  .toString()
+                                                  .substring(0, 16),
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Text(
-                                  popularBlogs[index].blogDate,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                              );
+                            } else {
+                              return SizedBox();
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
             ),
             SizedBox(height: 15),
           ],
@@ -156,16 +213,22 @@ class AuthorPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+        Flexible(
+          flex: 1,
+          child: Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
+        Flexible(
+          flex: 2,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
       ],

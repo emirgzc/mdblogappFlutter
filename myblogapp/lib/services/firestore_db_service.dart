@@ -1,7 +1,8 @@
-// ignore_for_file: unused_field, unused_local_variable, avoid_print, prefer_is_empty, override_on_non_overriding_member
+// ignore_for_file: unused_field, unused_local_variable, avoid_print, prefer_is_empty, override_on_non_overriding_member, annotate_overrides
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:myblogapp/model/blog.dart';
 import 'package:myblogapp/model/user.dart';
 import 'package:myblogapp/services/database_base.dart';
 
@@ -97,5 +98,100 @@ class FirestoreDBService implements DatabaseBase {
       {"profilUrl": profilFotoUrl},
     );
     return true;
+  }
+
+  @override
+  Future<List<Blog>?> getAllBlog() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await _firebaseFirestore
+        .collection("blogs")
+        .orderBy("blogDate", descending: true)
+        .get();
+
+    List<Blog> tumBloglar = [];
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> tekBlog
+        in querySnapshot.docs) {
+      Blog _tekBlog = Blog.fromMap(tekBlog.data());
+      tumBloglar.add(_tekBlog);
+    }
+
+    return tumBloglar;
+  }
+
+  @override
+  Future<List<Blog>?> getAllBlogLike() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await _firebaseFirestore
+        .collection("blogs")
+        .where(
+          "blogLikes",
+          isGreaterThanOrEqualTo: 1,
+        )
+        .orderBy("blogLikes", descending: true)
+        .get();
+
+    List<Blog> tumBloglar = [];
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> tekBlog
+        in querySnapshot.docs) {
+      Blog _tekBlog = Blog.fromMap(tekBlog.data());
+      tumBloglar.add(_tekBlog);
+    }
+
+    return tumBloglar;
+  }
+
+  @override
+  Future<bool> saveBlog(Blog eklenecekBlog) async {
+    var _blogID = _firebaseFirestore.collection("blogs").doc().id;
+    var _myDocumentID = eklenecekBlog.blogTitle.toString();
+    var _kaydedilecekBlogMap = eklenecekBlog.toMap();
+
+    await _firebaseFirestore
+        .collection("blogs")
+        .doc(_blogID)
+        .set(_kaydedilecekBlogMap);
+
+    return true;
+  }
+
+  @override
+  Future<List<MyUser>?> getAllUser() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await _firebaseFirestore.collection("users").get();
+
+    List<MyUser> tumKullanicilar = [];
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> tekUser
+        in querySnapshot.docs) {
+      MyUser _tekUser = MyUser.fromMap(tekUser.data());
+      tumKullanicilar.add(_tekUser);
+    }
+
+    /*map metodu ile
+    tumKullanicilar = querySnapshot.docs
+        .map(
+          (tekSatir) => MyUser.fromMap(
+            tekSatir.data(),
+          ),
+        )
+        .toList();*/
+
+    return tumKullanicilar;
+  }
+
+  @override
+  Future<MyUser?> getUserID(String writedID) async {
+    MyUser? thisUserID;
+    QuerySnapshot<Map<String, dynamic>> userID = await _firebaseFirestore
+        .collection("users")
+        .where("userID", isEqualTo: writedID)
+        .get();
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> tekUser in userID.docs) {
+      MyUser _tekUser = MyUser.fromMap(tekUser.data());
+      thisUserID = _tekUser;
+    }
+
+    return thisUserID;
   }
 }

@@ -14,7 +14,7 @@ class Writers {
   });
 }
 
-List<Writers> allWriters = [
+/*List<Writers> allWriters = [
   Writers(
     writerID: 1,
     name: "Angelina",
@@ -71,4 +71,4 @@ List<Writers> allWriters = [
     email: "WasherColp@gmail.com",
     image: "assets/images/w8.jpg",
   ),
-];
+];*/

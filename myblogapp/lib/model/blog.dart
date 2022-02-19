@@ -1,33 +1,61 @@
-import 'package:myblogapp/theme/desc.dart';
-import 'package:myblogapp/model/writers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Blog {
-  final int blogID;
-  final String blogTitle;
-  final String blogDesc;
-  final String blogDate;
-  final String blogImageUrl;
-  final Writers blogWriter;
-  final int blogLikes;
-  final String blogComment;
-  final String blogShare;
-  bool isSelect;
+  final String? blogID;
+  final String? blogTitle;
+  final String? blogDesc;
+  final Timestamp? blogDate;
+  final String? blogImageUrl;
+  final String? writerID;
+  final int? blogLikes;
+  final String? blogComment;
+  final String? blogShare;
 
   Blog({
-    required this.blogID,
-    required this.blogTitle,
-    required this.blogDesc,
-    required this.blogDate,
-    required this.blogImageUrl,
-    required this.blogWriter,
-    required this.blogLikes,
-    required this.blogComment,
-    required this.blogShare,
-    required this.isSelect,
+    this.blogID,
+    this.blogTitle,
+    this.blogDesc,
+    this.blogDate,
+    this.blogImageUrl,
+    this.writerID,
+    this.blogLikes,
+    this.blogComment,
+    this.blogShare,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      "blogID": blogID,
+      "blogTitle": blogTitle,
+      "blogDesc": blogDesc,
+      "blogDate": blogDate ?? FieldValue.serverTimestamp(),
+      "blogImageUrl": blogImageUrl,
+      "writerID": writerID,
+      "blogLikes": blogLikes,
+      "blogComment": blogComment,
+      "blogShare": blogShare,
+    };
+  }
+
+  Blog.fromMap(Map<String, dynamic> map)
+      : blogID = map["blogID"],
+        blogTitle = map["blogTitle"],
+        blogDesc = map["blogDesc"],
+        blogDate = map["blogDate"],
+        blogImageUrl = map["blogImageUrl"],
+        writerID = map["writerID"],
+        blogLikes = map["blogLikes"],
+        blogComment = map["blogComment"],
+        blogShare = map["blogShare"];
+
+  @override
+  String toString() {
+    return "Mesaj{blogID: $blogID, blogTitle: $blogTitle, blogDesc: $blogDesc, blogDate: $blogDate, blogImageUrl: $blogImageUrl, writerID: $writerID, blogLikes: $blogLikes, blogComment: $blogComment, blogShare: $blogShare}";
+  }
 }
 
-List<Blog> allBlogs = [
+
+/*List<Blog> allBlogs = [
   Blog(
     blogID: 1,
     blogTitle: "My Example Blog 1",
@@ -274,4 +302,4 @@ List<Blog> lastBlogs = [
     blogShare: "20",
     isSelect: true,
   ),
-];
+];*/

@@ -12,6 +12,8 @@ import 'package:myblogapp/pages/my_blog._page.dart';
 import 'package:myblogapp/pages/one_cikanlar.dart';
 import 'package:myblogapp/pages/profil_page.dart';
 import 'package:myblogapp/theme/color.dart';
+import 'package:myblogapp/viewmodel/view_model.dart';
+import 'package:provider/provider.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({Key? key, required this.user}) : super(key: key);
@@ -44,6 +46,7 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
+    UserModel _userModel = Provider.of<UserModel>(context);
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: buildAppBar(),
@@ -80,6 +83,7 @@ class _RootPageState extends State<RootPage> {
   }
 
   AppBar buildAppBar() {
+    UserModel _userModel = Provider.of<UserModel>(context);
     return AppBar(
       leading: IconButton(
         splashRadius: 24,
@@ -99,7 +103,9 @@ class _RootPageState extends State<RootPage> {
             Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 fullscreenDialog: true,
-                builder: (context) => AddBlogPage(),
+                builder: (context) => AddBlogPage(
+                  currentUser: _userModel.user,
+                ),
               ),
             );
           },

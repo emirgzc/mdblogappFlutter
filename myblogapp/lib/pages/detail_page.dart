@@ -3,15 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myblogapp/model/blog.dart';
+import 'package:myblogapp/model/user.dart';
 import 'package:myblogapp/pages/author_page.dart';
 import 'package:myblogapp/theme/color.dart';
 
 class Detailpage extends StatefulWidget {
-  Detailpage({Key? key, required this.blog, required this.likeCount})
+  Detailpage(
+      {Key? key,
+      required this.blog,
+      required this.likeCount,
+      required this.writers})
       : super(key: key);
 
   final Blog blog;
-  int likeCount;
+  int? likeCount;
+  final MyUser? writers;
 
   @override
   State<Detailpage> createState() => _DetailpageState();
@@ -30,9 +36,15 @@ class _DetailpageState extends State<Detailpage> {
             width: double.infinity,
             child: Hero(
               tag: "${widget.blog.blogID}",
-              child: Image.asset(
-                widget.blog.blogImageUrl,
-                fit: BoxFit.cover,
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      widget.blog.blogImageUrl.toString(),
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           ),
@@ -70,7 +82,7 @@ class _DetailpageState extends State<Detailpage> {
               padding: EdgeInsets.only(top: 20),
               children: [
                 Text(
-                  widget.blog.blogTitle,
+                  widget.blog.blogTitle.toString(),
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -78,7 +90,11 @@ class _DetailpageState extends State<Detailpage> {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  "Yayın Tarihi : " + widget.blog.blogDate,
+                  "Yayın Tarihi : " +
+                      widget.blog.blogDate!
+                          .toDate()
+                          .toString()
+                          .substring(0, 16),
                   style: TextStyle(
                     color: grey,
                     fontWeight: FontWeight.bold,
@@ -86,7 +102,7 @@ class _DetailpageState extends State<Detailpage> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  widget.blog.blogDesc,
+                  widget.blog.blogDesc.toString(),
                   style: TextStyle(
                     color: grey,
                     fontWeight: FontWeight.w400,
@@ -109,13 +125,13 @@ class _DetailpageState extends State<Detailpage> {
                     tagButton(
                       image: "comment.svg",
                       text: "Comments",
-                      value: widget.blog.blogComment,
+                      value: widget.blog.blogComment.toString(),
                     ),
                     SizedBox(width: 10),
                     tagButton(
                       image: "share.svg",
                       text: "Shares",
-                      value: widget.blog.blogShare,
+                      value: widget.blog.blogShare.toString(),
                     ),
                     SizedBox(width: 10),
                   ],
@@ -133,9 +149,7 @@ class _DetailpageState extends State<Detailpage> {
             right: 20,
             child: GestureDetector(
               onTap: () {
-                setState(() {
-                  widget.likeCount += 1;
-                });
+                setState(() {});
               },
               child: Container(
                 height: 40,
@@ -182,9 +196,7 @@ class _DetailpageState extends State<Detailpage> {
                     ),
                     PopupMenuItem(
                       onTap: () {
-                        setState(() {
-                          widget.likeCount += 1;
-                        });
+                        setState(() {});
                       },
                       child: Container(
                         height: 40,
@@ -219,14 +231,14 @@ class _DetailpageState extends State<Detailpage> {
       ),
       bottomNavigationBar: BottomAppBar(
         child: Container(
-          height: 60,
+          height: 70,
           padding: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
                 blurRadius: 20,
                 offset: Offset(0, 10),
-                color: Colors.black.withOpacity(0.15),
+                color: Colors.black.withOpacity(0.3),
               ),
             ],
             color: white,
@@ -236,38 +248,52 @@ class _DetailpageState extends State<Detailpage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AuthorPage(
-                          writers: widget.blog.blogWriter,
+                Flexible(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AuthorPage(
+                            writers: widget.writers,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 45,
+                      width: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            widget.writers!.profilUrl.toString(),
+                          ),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                    );
-                  },
-                  child: Image.asset(
-                    widget.blog.blogWriter.image,
-                    fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.blog.blogWriter.name +
-                          " " +
-                          widget.blog.blogWriter.surname,
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
+                Flexible(
+                  flex: 4,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.writers!.nameSurname.toString(),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    Text(
-                      widget.blog.blogWriter.email,
-                    ),
-                  ],
+                      Text(
+                        widget.writers!.email.toString(),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

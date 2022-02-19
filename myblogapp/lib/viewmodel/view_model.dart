@@ -1,24 +1,29 @@
-// ignore_for_file: constant_identifier_names, prefer_final_fields, unused_field, unnecessary_getters_setters, unused_local_variable, unnecessary_null_comparison, unused_element
+// ignore_for_file: constant_identifier_names, prefer_final_fields, unused_field, unnecessary_getters_setters, unused_local_variable, unnecessary_null_comparison, unused_element, annotate_overrides
 
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:myblogapp/locator.dart';
+import 'package:myblogapp/model/blog.dart';
 import 'package:myblogapp/model/user.dart';
 import 'package:myblogapp/repository/user_repository.dart';
 import 'package:myblogapp/services/auth_base.dart';
+import 'package:myblogapp/services/database_base.dart';
 
 enum ViewState { Idle, Busy }
 
-class UserModel with ChangeNotifier implements AuthBase {
+class UserModel with ChangeNotifier implements AuthBase, DatabaseBase {
   ViewState _state = ViewState.Idle;
   UserRepository _userRepository = locator<UserRepository>();
   MyUser? _user;
+  Blog? _blog;
   String? emailHataMesaji;
   String? email2HataMesaji;
   String? sifreHataMesaji;
 
   MyUser? get user => _user;
+
+  Blog? get blog => _blog;
 
   ViewState get state => _state;
 
@@ -226,5 +231,58 @@ class UserModel with ChangeNotifier implements AuthBase {
     var indirmeLinki =
         await _userRepository.uploadFile(userID, fileType, profilFoto);
     return indirmeLinki;
+  }
+
+  Future<String> uploadFileBlog(String blogID, File? profilFoto) async {
+    var indirmeLinki = await _userRepository.uploadFileBlog(blogID, profilFoto);
+    return indirmeLinki;
+  }
+
+  @override
+  Future<List<Blog>?> getAllBlog() async {
+    var tumBlogListesi = await _userRepository.getAllBlog();
+    return tumBlogListesi;
+  }
+
+  @override
+  Future<List<Blog>?> getAllBlogLike() async {
+    var tumBlogListesi = await _userRepository.getAllBlogLike();
+    return tumBlogListesi;
+  }
+
+  @override
+  Future<MyUser> readUser(String userID) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> saveBlog(Blog eklenecekBlog) {
+    var sonuc = _userRepository.saveBlog(eklenecekBlog);
+    if (sonuc != null) {
+      state = ViewState.Idle;
+    }
+    return sonuc;
+  }
+
+  @override
+  Future<bool> saveUser(MyUser? user) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> updateProfilFoto(String userID, String profilFotoUrl) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<MyUser>?> getAllUser() async {
+    var tumKullaniciListesi = await _userRepository.getAllUser();
+    return tumKullaniciListesi;
+  }
+
+  @override
+  Future<MyUser?> getUserID(String writedID) async {
+    var userID = await _userRepository.getUserID(writedID);
+    return userID;
   }
 }
